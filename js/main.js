@@ -4,6 +4,11 @@
 //Ciascuna icona ha una proprietà “color”: utilizzare questa proprietà per visualizzare le icone del colore corrispondente.
 //Milestone 3
 //Aggiungere alla pagina una select in cui le options corrispondono ai vari tipi di icone (animal, vegetable, user). Quando l’utente seleziona un tipo dalla select, visualizzare solamente le icone corrispondenti.
+const esadecimalValue = [
+	0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'
+];
+
+let color = '';
 
 const listElements = [
 	{
@@ -11,143 +16,154 @@ const listElements = [
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'crow',
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'dog',
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'dove',
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'dragon',
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'horse',
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'hippo',
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'fish',
 		prefix: 'fa-',
 		type: 'animal',
 		family: 'fas',
-		color: 'orange'
+		color
 	},
 	{
 		name: 'carrot',
 		prefix: 'fa-',
 		type: 'vegetable',
 		family: 'fas',
-		color: 'green'
+		color
 	},
 	{
 		name: 'apple-alt',
 		prefix: 'fa-',
 		type: 'vegetable',
 		family: 'fas',
-		color: 'green'
+		color
 	},
 	{
 		name: 'lemon',
 		prefix: 'fa-',
 		type: 'vegetable',
 		family: 'fas',
-		color: 'green'
+		color
 	},
 	{
 		name: 'pepper-hot',
 		prefix: 'fa-',
 		type: 'vegetable',
 		family: 'fas',
-		color: 'green'
+		color
 	},
 	{
 		name: 'user-astronaut',
 		prefix: 'fa-',
 		type: 'user',
 		family: 'fas',
-		color: 'blue'
+		color 
 	},
 	{
 		name: 'user-graduate',
 		prefix: 'fa-',
 		type: 'user',
 		family: 'fas',
-		color: 'blue'
+		color
 	},
 	{
 		name: 'user-ninja',
 		prefix: 'fa-',
 		type: 'user',
 		family: 'fas',
-		color: 'blue'
+		color
 	},
 	{
 		name: 'user-secret',
 		prefix: 'fa-',
 		type: 'user',
 		family: 'fas',
-		color: 'blue'
-	}
+		color
+	},
 ];
+
 const containerDom = document.getElementById('container');
 let selectDom = document.getElementById('selector');
 let choosenSelected = selectDom.value;
 
+let base = ''
+let mapped = [];
+mapped.push('all');
 
-listElements.forEach(element =>{
-	let newCard = createCard(element.name, element.prefix, element.color);
-	containerDom.append(newCard);
+listElements.map((element) =>{ 
+if(element.type != base){
+	mapped.push(element.type);
+	base = element.type;
+}
 });
 
+for(let i = 0; i < mapped.length;i++){
+	selectDom.innerHTML += `<option value="${mapped[i]}">${mapped[i]}</option>`
+}
+
+
+listElements.forEach(element =>{ 
+	element.color = randomColor(esadecimalValue); 
+	appendCard(element,containerDom)
+});
 
 selectDom.addEventListener('change',function(){
 	let choosenSelected = selectDom.value;
 	const filteredElements = listElements.filter(element =>{
 		if( element.type == choosenSelected){
 			return element;
-		}else if( choosenSelected == ''){
+		}else if( choosenSelected == 'all'){
 			return element;
 		}
 	});
 
 	containerDom.innerHTML = '';
 
-	filteredElements.forEach(element =>{
-		let newCard = createCard(element.name, element.prefix, element.color);
-		containerDom.append(newCard);
-	});
+	filteredElements.forEach(element =>appendCard(element,containerDom));
 });
-
 
 function createCard(name, prefix, color){
 	let cardbox = document.createElement('div');
@@ -156,7 +172,7 @@ function createCard(name, prefix, color){
 	iconbox.classList.add('icon');
 	let namebox = document.createElement('h5');
 
-	iconbox.innerHTML = `<i class="fa-solid ${prefix}${name}" style="color: ${color}"></i>`
+	iconbox.innerHTML = `<i class="fa-solid ${prefix}${name}" style="color: #${color}"></i>`
 
 	namebox.append(name)
 	cardbox.append(iconbox);
@@ -165,7 +181,31 @@ function createCard(name, prefix, color){
 	return cardbox
 }
 
-// function appendCard(){
-// 	let newCard = createCard(element.name, element.prefix, element.color);
-// 		containerDom.append(newCard);
+function appendCard(element,containerDom){
+	let newCard = createCard(element.name, element.prefix, element.color);
+		containerDom.append(newCard);
+}
+
+function randomColor(array){
+	let number = '';
+	let numeriCompleti = '';
+	for(let i = 0; i < 6; i++){
+		number = Math.floor(Math.random() * ((array.length - 1) -1) + 1);
+		numeriCompleti += array[number];
+	}
+	return numeriCompleti;
+}
+
+// function optionCreations(array){
+// 	// let base = ''
+// 	// let mapped = [];
+// 	// mapped.push('all');
+// 	// mapped = array.map((element) =>{ 
+// 	// if(element.type != base){
+// 	// 	mapped.push(element.type);
+// 	// 	base = element.type;
+// 	// }
+// 	// return mapped;
+// });
 // }
+
