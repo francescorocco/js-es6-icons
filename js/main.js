@@ -1,5 +1,7 @@
 // Milestone 1
 // Partendo dalla struttura dati fornita, visualizzare in pagina un box per ogni icona, in cui è presente il nome dell’icona e l’icona stessa.
+//Milestone 2
+//Ciascuna icona ha una proprietà “color”: utilizzare questa proprietà per visualizzare le icone del colore corrispondente.
 
 const listElements = [
 	{
@@ -118,20 +120,20 @@ const listElements = [
 const containerDom = document.getElementById('container');
 
 listElements.forEach(element =>{
-	let newCard = createCard(element.name, element.prefix);
+	let newCard = createCard(element.name, element.prefix, element.color);
 	containerDom.append(newCard);
 });
 
 
 
-function createCard(name, prefix){
+function createCard(name, prefix, color){
 	let cardbox = document.createElement('div');
 	cardbox.classList.add('card');
 	let iconbox = document.createElement('div');
 	iconbox.classList.add('icon');
 	let namebox = document.createElement('h5');
 
-	iconbox.innerHTML = `<i class="fa-solid ${prefix}${name}"></i>`
+	iconbox.innerHTML = `<i class="fa-solid ${prefix}${name}" style="color: ${color}"></i>`
 
 	namebox.append(name)
 	cardbox.append(iconbox);
